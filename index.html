@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة بنور - بطاقة الدخول الذكية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --primary-hover: #4338CA;
+            --secondary: #10B981;
+            --bg-color: #F3F4F6;
+            --card-bg: #FFFFFF;
+            --text-main: #1F2937;
+            --text-muted: #6B7280;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            padding: 40px 30px;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .icon-header {
+            font-size: 50px;
+            margin-bottom: 10px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        h2 { font-size: 26px; font-weight: 800; margin-bottom: 5px; color: var(--primary); }
+        .greeting { font-size: 16px; font-weight: 700; color: var(--secondary); margin-bottom: 5px; }
+        p.subtitle { font-size: 15px; color: var(--text-muted); margin-bottom: 30px; line-height: 1.6; }
+
+        /* نموذج الإدخال */
+        .input-wrapper { position: relative; margin-bottom: 25px; }
+        .input-wrapper input {
+            width: 100%;
+            padding: 16px 20px;
+            background-color: #F9FAFB;
+            border: 2px solid #E5E7EB;
+            border-radius: 16px;
+            font-size: 18px;
+            font-family: inherit;
+            text-align: center;
+            transition: all 0.3s;
+            box-sizing: border-box;
+        }
+        .input-wrapper input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background-color: #FFF;
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+        }
+
+        button.btn-main {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary), #818CF8);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 18px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        button.btn-main:hover { transform: translateY(-2px); box-shadow: 0 15px 25px rgba(79, 70, 229, 0.3); }
+
+        /* قسم النتيجة */
+        #resultSection { display: none; }
+        .student-name { font-size: 20px; font-weight: 800; margin: 15px 0; color: #111827; }
+        
+        .credential-box {
+            background-color: #F8FAFC;
+            border: 1px solid #E2E8F0;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .cred-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px dashed #CBD5E1;
+        }
+        .cred-item:last-child { border-bottom: none; padding-bottom: 0; }
+        
+        .cred-info { text-align: right; }
+        .cred-label { font-size: 13px; color: var(--text-muted); display: block; margin-bottom: 4px; }
+        .cred-value { font-size: 18px; font-weight: 800; color: #0F172A; letter-spacing: 1px; }
+
+        .btn-copy {
+            background-color: #E0E7FF;
+            color: var(--primary);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        .btn-copy:hover { background-color: var(--primary); color: white; }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .btn-action {
+            flex: 1;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            text-decoration: none;
+            font-family: inherit;
+        }
+        .btn-whatsapp { background-color: #DCF8C6; color: #075E54; }
+        .btn-platform { background-color: #DBEAFE; color: #1E40AF; }
+        
+        .btn-reset {
+            margin-top: 20px;
+            background: transparent;
+            color: var(--text-muted);
+            border: none;
+            text-decoration: underline;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        #errorMessage { color: #DC2626; font-size: 14px; margin-top: 15px; display: none; font-weight: 500;}
+    </style>
+</head>
+<body>
+
+    <div class="card" id="mainCard">
+        
+        <div id="searchSection">
+            <div class="icon-header">🎒</div>
+            <div class="greeting" id="timeGreeting">مرحباً بك</div>
+            <h2>منصة بنور</h2>
+            <p class="subtitle">بوابتك لمستقبل مشرق. أدخل الرقم المدني للطالب وسنتكفل بالباقي.</p>
+
+            <div class="input-wrapper">
+                <input type="number" id="civilId" placeholder="أدخل الرقم المدني هنا..." required>
+            </div>
+
+            <button class="btn-main" id="submitBtn" onclick="fetchStudentData()">
+                <span id="btnText">استخراج بيانات الدخول ✨</span>
+            </button>
+            <div id="errorMessage"></div>
+        </div>
+
+        <div id="resultSection">
+            <div class="icon-header">🎉</div>
+            <h3 class="student-name" id="resStudentName">---</h3>
+            <p class="subtitle" style="margin-bottom: 15px;">تم استخراج بيانات الدخول بنجاح!</p>
+
+            <div class="credential-box">
+                <div class="cred-item">
+                    <div class="cred-info">
+                        <span class="cred-label">اسم المستخدم</span>
+                        <span class="cred-value" id="resUsername">---</span>
+                    </div>
+                    <button class="btn-copy" onclick="copyToClipboard('resUsername', this)">نسخ</button>
+                </div>
+                
+                <div class="cred-item">
+                    <div class="cred-info">
+                        <span class="cred-label">كلمة المرور</span>
+                        <span class="cred-value" id="resPassword">---</span>
+                    </div>
+                    <button class="btn-copy" onclick="copyToClipboard('resPassword', this)">نسخ</button>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <a href="https://banoor.om" target="_blank" class="btn-action btn-platform">
+                    <span style="font-size: 20px;">🌐</span>
+                    دخول للمنصة
+                </a>
+                <button class="btn-action btn-whatsapp" onclick="shareViaWhatsApp()">
+                    <span style="font-size: 20px;">💬</span>
+                    مشاركة العائلة
+                </button>
+            </div>
+
+            <button class="btn-reset" onclick="resetForm()">البحث عن طالب آخر</button>
+        </div>
+
+    </div>
+
+    <script>
+        // ⚠️ رابط تطبيق الويب الخاص بك (Google Apps Script)
+        const GAS_WEB_APP_URL = "أدخل_الرابط_هنا";
+
+        // تحديد التحية بناءً على الوقت
+        window.onload = () => {
+            const hour = new Date().getHours();
+            const greetingObj = document.getElementById('timeGreeting');
+            if(hour < 12) greetingObj.innerText = "صباح الخير ☀️";
+            else greetingObj.innerText = "مساء الخير 🌙";
+        };
+
+        async function fetchStudentData() {
+            const civilIdInput = document.getElementById('civilId').value;
+            const btn = document.getElementById('submitBtn');
+            const btnText = document.getElementById('btnText');
+            const errorMessage = document.getElementById('errorMessage');
+
+            if (!civilIdInput) {
+                errorMessage.innerText = "الرجاء إدخال الرقم المدني الجميل أولاً 😊";
+                errorMessage.style.display = 'block';
+                return;
+            }
+
+            btn.disabled = true;
+            btnText.innerText = 'جاري سحب البيانات... ⏳';
+            errorMessage.style.display = 'none';
+
+            try {
+                const response = await fetch(GAS_WEB_APP_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ civil_id: civilIdInput })
+                });
+
+                const result = await response.json();
+
+                if (result.status === "success") {
+                    document.getElementById('searchSection').style.display = 'none';
+                    document.getElementById('resultSection').style.display = 'block';
+                    
+                    document.getElementById('resStudentName').innerText = "الطالب: " + result.data.studentName;
+                    document.getElementById('resUsername').innerText = result.data.username;
+                    document.getElementById('resPassword').innerText = result.data.password;
+
+                    // إطلاق الألعاب النارية (Confetti) 🎊
+                    confetti({
+                        particleCount: 150,
+                        spread: 70,
+                        origin: { y: 0.6 },
+                        colors: ['#4F46E5', '#10B981', '#F59E0B']
+                    });
+
+                } else {
+                    errorMessage.innerText = "لم نتمكن من العثور على الرقم، تأكد منه وحاول مجدداً.";
+                    errorMessage.style.display = 'block';
+                }
+
+            } catch (error) {
+                errorMessage.innerText = "يبدو أن هناك ضغط على الشبكة، يرجى المحاولة بعد لحظات.";
+                errorMessage.style.display = 'block';
+            } finally {
+                btn.disabled = false;
+                btnText.innerText = 'استخراج بيانات الدخول ✨';
+            }
+        }
+
+        // دالة النسخ الذكي
+        function copyToClipboard(elementId, btnElement) {
+            const textToCopy = document.getElementById(elementId).innerText;
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const originalText = btnElement.innerText;
+                btnElement.innerText = 'تم ✔️';
+                btnElement.style.backgroundColor = '#10B981';
+                btnElement.style.color = '#FFF';
+                
+                setTimeout(() => {
+                    btnElement.innerText = originalText;
+                    btnElement.style.backgroundColor = '#E0E7FF';
+                    btnElement.style.color = '#4F46E5';
+                }, 2000);
+            });
+        }
+
+        // دالة تحضير رسالة الواتساب
+        function shareViaWhatsApp() {
+            const sName = document.getElementById('resStudentName').innerText;
+            const uName = document.getElementById('resUsername').innerText;
+            const pass = document.getElementById('resPassword').innerText;
+            
+            const message = `مرحباً، هذه بيانات الدخول لمنصة بنور لـ ${sName}\n\n👤 اسم المستخدم: ${uName}\n🔑 كلمة المرور: ${pass}\n\n🌐 رابط المنصة: https://banoor.om`;
+            
+            // ترميز النص ليتوافق مع الروابط
+            const encodedMessage = encodeURIComponent(message);
+            window.open(`https://wa.me/?text=${encodedMessage}`, '_blank');
+        }
+
+        function resetForm() {
+            document.getElementById('civilId').value = '';
+            document.getElementById('searchSection').style.display = 'block';
+            document.getElementById('resultSection').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
