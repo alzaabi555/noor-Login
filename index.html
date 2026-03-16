@@ -3,22 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة بنور - بطاقة الدخول الذكية</title>
+    <title>منصة نور - بطاقة الدخول الذكية</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
-    
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <style>
         :root {
             --primary: #4F46E5;
-            --primary-hover: #4338CA;
-            --secondary: #10B981;
             --bg-color: #F3F4F6;
             --card-bg: #FFFFFF;
             --text-main: #1F2937;
             --text-muted: #6B7280;
+            /* ألوان البطاقة الجديدة الرسمية */
+            --id-bg: #1A2744;
+            --id-gold: #FBBF24;
+            --id-text: #FFFFFF;
         }
 
         body {
@@ -34,222 +34,208 @@
             box-sizing: border-box;
         }
 
-        .card {
+        .main-container {
             background-color: var(--card-bg);
             padding: 40px 30px;
             border-radius: 24px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
             width: 100%;
-            max-width: 420px;
+            max-width: 500px; /* تم التوسيع قليلاً لتناسب البطاقة الأفقية */
             text-align: center;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.4s ease;
         }
 
-        .icon-header {
-            font-size: 50px;
-            margin-bottom: 10px;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-
+        /* ---------------- قسم البحث ---------------- */
+        .icon-header { font-size: 50px; margin-bottom: 10px; }
         h2 { font-size: 26px; font-weight: 800; margin-bottom: 5px; color: var(--primary); }
-        .greeting { font-size: 16px; font-weight: 700; color: var(--secondary); margin-bottom: 5px; }
         p.subtitle { font-size: 15px; color: var(--text-muted); margin-bottom: 30px; line-height: 1.6; }
 
-        .input-wrapper { position: relative; margin-bottom: 25px; }
+        .input-wrapper { margin-bottom: 25px; }
         .input-wrapper input {
-            width: 100%;
-            padding: 16px 20px;
-            background-color: #F9FAFB;
-            border: 2px solid #E5E7EB;
-            border-radius: 16px;
-            font-size: 18px;
-            font-family: inherit;
-            text-align: center;
-            transition: all 0.3s;
-            box-sizing: border-box;
+            width: 100%; padding: 16px 20px; background-color: #F9FAFB;
+            border: 2px solid #E5E7EB; border-radius: 16px;
+            font-size: 18px; font-family: inherit; text-align: center;
+            box-sizing: border-box; transition: 0.3s;
         }
-        .input-wrapper input:focus {
-            outline: none;
-            border-color: var(--primary);
-            background-color: #FFF;
-            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
-        }
+        .input-wrapper input:focus { border-color: var(--primary); outline: none; }
 
         button.btn-main {
-            width: 100%;
-            padding: 16px;
-            background: linear-gradient(135deg, var(--primary), #818CF8);
-            color: white;
-            border: none;
-            border-radius: 16px;
-            font-size: 18px;
-            font-weight: 700;
-            font-family: inherit;
-            cursor: pointer;
-            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.2);
-            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%; padding: 16px; background: linear-gradient(135deg, var(--primary), #818CF8);
+            color: white; border: none; border-radius: 16px; font-size: 18px;
+            font-weight: 700; cursor: pointer; font-family: inherit; transition: 0.2s;
         }
-        button.btn-main:hover { transform: translateY(-2px); box-shadow: 0 15px 25px rgba(79, 70, 229, 0.3); }
+        button.btn-main:hover { transform: translateY(-2px); }
 
         #resultSection { display: none; }
-        .student-name { font-size: 20px; font-weight: 800; margin: 15px 0; color: #111827; }
-        
-        .credential-box {
-            background-color: #F8FAFC;
-            border: 1px solid #E2E8F0;
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 20px;
+        #errorMessage { color: #DC2626; font-size: 14px; margin-top: 15px; display: none; font-weight: 700;}
+
+        /* ---------------- تصميم البطاقة الرسمية (ID Card) ---------------- */
+        .id-card-wrapper {
+            /* الإطار المتقطع الخارجي المستوحى من صورتك */
+            padding: 10px;
+            border: 2px dashed #CBD5E1;
+            border-radius: 28px;
+            margin-bottom: 25px;
+            background-color: white;
         }
 
-        .cred-item {
+        .id-card {
+            background-color: var(--id-bg);
+            border-radius: 20px;
+            padding: 25px;
+            display: flex;
+            flex-direction: row-reverse; /* اليمين لليسار */
+            justify-content: space-between;
+            align-items: center;
+            color: var(--id-text);
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* إضافة تأثير بصري خفيف لخلفية البطاقة */
+        .id-card::before {
+            content: ''; position: absolute; top: -50px; right: -50px;
+            width: 150px; height: 150px; background: rgba(255,255,255,0.03);
+            border-radius: 50%;
+        }
+
+        .id-right { flex: 1; text-align: right; padding-left: 15px; z-index: 1; }
+        .id-left { display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 1; }
+
+        .id-header { display: flex; align-items: center; justify-content: flex-end; gap: 10px; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
+        .id-header-text { font-size: 16px; font-weight: 700; }
+        .id-header-sub { font-size: 12px; color: #94A3B8; display: block; }
+        .id-icon { font-size: 24px; background: rgba(255,255,255,0.1); padding: 8px; border-radius: 10px; }
+
+        .student-name-gold {
+            color: var(--id-gold);
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .data-pill {
+            background-color: #F8FAFC;
+            border-radius: 12px;
+            padding: 10px 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px dashed #CBD5E1;
+            margin-bottom: 10px;
+            color: var(--text-main);
         }
-        .cred-item:last-child { border-bottom: none; padding-bottom: 0; }
-        
-        .cred-info { text-align: right; }
-        .cred-label { font-size: 13px; color: var(--text-muted); display: block; margin-bottom: 4px; }
-        .cred-value { font-size: 18px; font-weight: 800; color: #0F172A; letter-spacing: 1px; }
+        .pill-label { font-size: 13px; font-weight: 700; color: #475569; }
+        .pill-value { font-size: 16px; font-weight: 800; color: var(--primary); letter-spacing: 1px; user-select: all; }
 
-        .btn-copy {
-            background-color: #E0E7FF;
-            color: var(--primary);
-            border: none;
-            padding: 8px 15px;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 13px;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-family: inherit;
-        }
-        .btn-copy:hover { background-color: var(--primary); color: white; }
-
-        .action-buttons {
+        /* منطقة الشعار واليسار */
+        .logo-box {
+            background-color: white;
+            width: 90px;
+            height: 90px;
+            border-radius: 16px;
             display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        
-        .btn-action {
-            flex: 1 1 calc(50% - 5px);
-            padding: 12px;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 14px;
-            cursor: pointer;
-            border: none;
-            display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
-            gap: 5px;
-            text-decoration: none;
-            font-family: inherit;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            font-size: 40px;
         }
-        
-        .btn-whatsapp { background-color: #DCF8C6; color: #075E54; }
-        .btn-platform { background-color: #DBEAFE; color: #1E40AF; }
-        .btn-save { background-color: #FEF3C7; color: #D97706; }
+        .scan-text { font-size: 11px; font-weight: 700; text-align: center; color: #CBD5E1; line-height: 1.4; }
+
+        /* ---------------- الأزرار السفلية ---------------- */
+        .action-buttons { display: flex; gap: 10px; }
+        .btn-action {
+            flex: 1; padding: 12px; border-radius: 12px; font-weight: 700; font-size: 14px;
+            cursor: pointer; border: none; display: flex; justify-content: center; align-items: center; gap: 8px; font-family: inherit;
+        }
+        .btn-save { background-color: #10B981; color: white; }
         .btn-print { background-color: #F3F4F6; color: #4B5563; }
-        
-        .btn-reset {
-            margin-top: 20px;
-            background: transparent;
-            color: var(--text-muted);
-            border: none;
-            text-decoration: underline;
-            cursor: pointer;
-            font-family: inherit;
-        }
+        .btn-reset { margin-top: 20px; background: transparent; color: var(--text-muted); border: none; text-decoration: underline; cursor: pointer; font-family: inherit; }
 
-        #errorMessage { color: #DC2626; font-size: 14px; margin-top: 15px; display: none; font-weight: 500;}
-
-        /* إعدادات الطباعة (إخفاء الأزرار عند طباعة الورقة) */
         @media print {
             body { background: white; }
-            .card { box-shadow: none; max-width: 100%; border: 2px solid #000; }
-            .action-buttons, .btn-reset, .btn-copy { display: none !important; }
+            .main-container { box-shadow: none; max-width: 100%; padding: 0; }
+            #searchSection, .action-buttons, .btn-reset { display: none !important; }
+            .id-card-wrapper { border: none; padding: 0; }
+            .id-card { box-shadow: none; border: 2px solid #000; background-color: white !important; color: black !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .id-card::before { display: none; }
+            .student-name-gold { color: black !important; }
+            .data-pill { border: 1px solid #000; }
+        }
+
+        /* تعديلات للموبايل */
+        @media (max-width: 480px) {
+            .id-card { flex-direction: column; text-align: center; padding: 20px 15px; }
+            .id-right { padding-left: 0; width: 100%; margin-bottom: 20px; }
+            .id-header { justify-content: center; }
+            .data-pill { flex-direction: column; gap: 5px; text-align: center; }
         }
     </style>
 </head>
 <body>
 
-    <div class="card" id="mainCard">
+    <div class="main-container">
         
         <div id="searchSection">
-            <div class="icon-header">🎒</div>
-            <div class="greeting" id="timeGreeting">مرحباً بك</div>
-            <h2>منصة بنور</h2>
-            <p class="subtitle">بوابتك لمستقبل مشرق. أدخل الرقم المدني للطالب وسنتكفل بالباقي.</p>
+            <div class="icon-header">🏫</div>
+            <h2>منصة بنور التعليمية</h2>
+            <p class="subtitle">أدخل الرقم المدني للطالب لاستخراج بطاقة الدخول الرسمية.</p>
 
             <div class="input-wrapper">
-                <input type="number" id="civilId" placeholder="أدخل الرقم المدني هنا..." required>
+                <input type="number" id="civilId" placeholder="الرقم المدني هنا..." required>
             </div>
 
             <button class="btn-main" id="submitBtn" onclick="fetchStudentData()">
-                <span id="btnText">استخراج بيانات الدخول ✨</span>
+                <span id="btnText">استخراج البطاقة</span>
             </button>
             <div id="errorMessage"></div>
         </div>
 
         <div id="resultSection">
-            <div id="captureArea" style="background-color: white; padding: 15px; border-radius: 16px;">
-                <div class="icon-header">🎉</div>
-                <h3 class="student-name" id="resStudentName">---</h3>
-                <p class="subtitle" style="margin-bottom: 15px;">بيانات الدخول المعتمدة</p>
-
-                <div class="credential-box">
-                    <div class="cred-item">
-                        <div class="cred-info">
-                            <span class="cred-label">اسم المستخدم</span>
-                            <span class="cred-value" id="resUsername">---</span>
+            
+            <div class="id-card-wrapper" id="captureArea">
+                <div class="id-card">
+                    <div class="id-right">
+                        <div class="id-header">
+                            <div>
+                                <span class="id-header-text">منصة بنور التعليمية</span>
+                                <span class="id-header-sub">بوابة الدخول الرسمية للطلاب</span>
+                            </div>
+                            <div class="id-icon">🎓</div>
                         </div>
-                        <button class="btn-copy" onclick="copyToClipboard('resUsername', this)">نسخ</button>
+                        
+                        <div class="student-name-gold" id="resStudentName">---</div>
+                        
+                        <div class="data-pill">
+                            <span class="pill-label">اسم المستخدم:</span>
+                            <span class="pill-value" id="resUsername">---</span>
+                        </div>
+                        <div class="data-pill">
+                            <span class="pill-label">كلمة المرور:</span>
+                            <span class="pill-value" id="resPassword">---</span>
+                        </div>
                     </div>
-                    
-                    <div class="cred-item">
-                        <div class="cred-info">
-                            <span class="cred-label">كلمة المرور</span>
-                            <span class="cred-value" id="resPassword">---</span>
+
+                    <div class="id-left">
+                        <div class="logo-box">
+                            📚
                         </div>
-                        <button class="btn-copy" onclick="copyToClipboard('resPassword', this)">نسخ</button>
+                        <div class="scan-text">بطاقة<br>طالب معتمدة</div>
                     </div>
                 </div>
             </div>
 
-            <div class="action-buttons" id="actionButtons">
+            <div class="action-buttons">
                 <button class="btn-action btn-save" onclick="saveAsImage()">
-                    <span style="font-size: 20px;">📸</span>
-                    حفظ كصورة
+                    <span>📸</span> حفظ البطاقة
                 </button>
                 <button class="btn-action btn-print" onclick="window.print()">
-                    <span style="font-size: 20px;">🖨️</span>
-                    طباعة
-                </button>
-                <a href="https://banoor.om" target="_blank" class="btn-action btn-platform">
-                    <span style="font-size: 20px;">🌐</span>
-                    دخول للمنصة
-                </a>
-                <button class="btn-action btn-whatsapp" onclick="shareViaWhatsApp()">
-                    <span style="font-size: 20px;">💬</span>
-                    مشاركة
+                    <span>🖨️</span> طباعة
                 </button>
             </div>
 
-            <button class="btn-reset" id="resetBtn" onclick="resetForm()">البحث عن طالب آخر</button>
+            <button class="btn-reset" onclick="resetForm()">البحث عن طالب آخر</button>
         </div>
 
     </div>
@@ -258,13 +244,6 @@
         // ⚠️ ضع رابط جوجل شيت هنا
        const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxb7pGmD5oKpJ1i1YQ7086EmdIqIGs_sV3LN29TASwJVLZogaN9F_tkX0A7QK8cI0o/exec";
 
-        window.onload = () => {
-            const hour = new Date().getHours();
-            const greetingObj = document.getElementById('timeGreeting');
-            if(hour < 12) greetingObj.innerText = "صباح الخير ☀️";
-            else greetingObj.innerText = "مساء الخير 🌙";
-        };
-
         async function fetchStudentData() {
             const civilIdInput = document.getElementById('civilId').value;
             const btn = document.getElementById('submitBtn');
@@ -272,7 +251,7 @@
             const errorMessage = document.getElementById('errorMessage');
 
             if (!civilIdInput) {
-                errorMessage.innerText = "الرجاء إدخال الرقم المدني أولاً 😊";
+                errorMessage.innerText = "الرجاء إدخال الرقم المدني أولاً.";
                 errorMessage.style.display = 'block';
                 return;
             }
@@ -294,16 +273,9 @@
                     document.getElementById('searchSection').style.display = 'none';
                     document.getElementById('resultSection').style.display = 'block';
                     
-                    document.getElementById('resStudentName').innerText = "الطالب: " + result.data.studentName;
+                    document.getElementById('resStudentName').innerText = result.data.studentName;
                     document.getElementById('resUsername').innerText = result.data.username;
                     document.getElementById('resPassword').innerText = result.data.password;
-
-                    confetti({
-                        particleCount: 150,
-                        spread: 70,
-                        origin: { y: 0.6 },
-                        colors: ['#4F46E5', '#10B981', '#F59E0B']
-                    });
 
                 } else {
                     errorMessage.innerText = "لم نتمكن من العثور على الرقم، تأكد منه وحاول مجدداً.";
@@ -315,52 +287,20 @@
                 errorMessage.style.display = 'block';
             } finally {
                 btn.disabled = false;
-                btnText.innerText = 'استخراج بيانات الدخول ✨';
+                btnText.innerText = 'استخراج البطاقة';
             }
         }
 
-        function copyToClipboard(elementId, btnElement) {
-            const textToCopy = document.getElementById(elementId).innerText;
-            navigator.clipboard.writeText(textToCopy).then(() => {
-                const originalText = btnElement.innerText;
-                btnElement.innerText = 'تم ✔️';
-                btnElement.style.backgroundColor = '#10B981';
-                btnElement.style.color = '#FFF';
-                
-                setTimeout(() => {
-                    btnElement.innerText = originalText;
-                    btnElement.style.backgroundColor = '#E0E7FF';
-                    btnElement.style.color = '#4F46E5';
-                }, 2000);
-            });
-        }
-
-        function shareViaWhatsApp() {
-            const sName = document.getElementById('resStudentName').innerText;
-            const uName = document.getElementById('resUsername').innerText;
-            const pass = document.getElementById('resPassword').innerText;
-            const message = `مرحباً، هذه بيانات الدخول لمنصة نور لـ ${sName}\n\n👤 اسم المستخدم: ${uName}\n🔑 كلمة المرور: ${pass}\n\n🌐 رابط المنصة: https://banoor.om`;
-            window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
-        }
-
-        // دالة حفظ البطاقة كصورة
+        // دالة حفظ البطاقة كصورة (تلتقط فقط إطار البطاقة id-card-wrapper)
         function saveAsImage() {
             const captureArea = document.getElementById('captureArea');
-            const buttonsToHide = document.querySelectorAll('.btn-copy');
             
-            // إخفاء أزرار النسخ مؤقتاً لكي لا تظهر في الصورة الملتقطة
-            buttonsToHide.forEach(btn => btn.style.display = 'none');
-
             html2canvas(captureArea, {
-                scale: 2, // رفع جودة الصورة
-                backgroundColor: '#ffffff'
+                scale: 3, // دقة عالية للصورة
+                backgroundColor: '#ffffff' // خلفية بيضاء للإطار المتقطع
             }).then(canvas => {
-                // إعادة إظهار أزرار النسخ
-                buttonsToHide.forEach(btn => btn.style.display = 'block');
-
-                // إنشاء رابط التحميل للصورة
                 const link = document.createElement('a');
-                link.download = 'بيانات_منصة_نور.png';
+                link.download = 'بطاقة_دخول_نور.png';
                 link.href = canvas.toDataURL('image/png');
                 link.click();
             });
