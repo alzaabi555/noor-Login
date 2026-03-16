@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة نور - بطاقة الدخول الذكية</title>
+    <title>منصة نور - مدرسة الإبداع للبنين</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -15,7 +15,7 @@
             --card-bg: #FFFFFF;
             --text-main: #1F2937;
             --text-muted: #6B7280;
-            /* ألوان البطاقة الجديدة الرسمية */
+            /* ألوان البطاقة الرسمية */
             --id-bg: #1A2744;
             --id-gold: #FBBF24;
             --id-text: #FFFFFF;
@@ -40,13 +40,20 @@
             border-radius: 24px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
             width: 100%;
-            max-width: 500px; /* تم التوسيع قليلاً لتناسب البطاقة الأفقية */
+            max-width: 500px;
             text-align: center;
         }
 
         /* ---------------- قسم البحث ---------------- */
-        .icon-header { font-size: 50px; margin-bottom: 10px; }
-        h2 { font-size: 26px; font-weight: 800; margin-bottom: 5px; color: var(--primary); }
+        .school-logo-main {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+            margin-bottom: 15px;
+        }
+        
+        h2 { font-size: 24px; font-weight: 800; margin-bottom: 5px; color: var(--primary); }
+        h3 { font-size: 18px; font-weight: 700; color: #1F2937; margin-top: 0; margin-bottom: 10px; }
         p.subtitle { font-size: 15px; color: var(--text-muted); margin-bottom: 30px; line-height: 1.6; }
 
         .input-wrapper { margin-bottom: 25px; }
@@ -70,7 +77,6 @@
 
         /* ---------------- تصميم البطاقة الرسمية (ID Card) ---------------- */
         .id-card-wrapper {
-            /* الإطار المتقطع الخارجي المستوحى من صورتك */
             padding: 10px;
             border: 2px dashed #CBD5E1;
             border-radius: 28px;
@@ -83,7 +89,7 @@
             border-radius: 20px;
             padding: 25px;
             display: flex;
-            flex-direction: row-reverse; /* اليمين لليسار */
+            flex-direction: row-reverse;
             justify-content: space-between;
             align-items: center;
             color: var(--id-text);
@@ -92,24 +98,40 @@
             overflow: hidden;
         }
 
-        /* إضافة تأثير بصري خفيف لخلفية البطاقة */
         .id-card::before {
             content: ''; position: absolute; top: -50px; right: -50px;
             width: 150px; height: 150px; background: rgba(255,255,255,0.03);
             border-radius: 50%;
         }
 
-        .id-right { flex: 1; text-align: right; padding-left: 15px; z-index: 1; }
+        .id-right { flex: 1; text-align: right; padding-left: 15px; z-index: 1; width: 100%; }
         .id-left { display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 1; }
 
-        .id-header { display: flex; align-items: center; justify-content: flex-end; gap: 10px; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
-        .id-header-text { font-size: 16px; font-weight: 700; }
-        .id-header-sub { font-size: 12px; color: #94A3B8; display: block; }
-        .id-icon { font-size: 24px; background: rgba(255,255,255,0.1); padding: 8px; border-radius: 10px; }
+        .id-header { 
+            display: flex; 
+            align-items: center; 
+            justify-content: flex-end; 
+            gap: 12px; 
+            margin-bottom: 15px; 
+            border-bottom: 1px solid rgba(255,255,255,0.1); 
+            padding-bottom: 10px; 
+        }
+        
+        .id-school-logo {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            background-color: white;
+            border-radius: 8px;
+            padding: 2px;
+        }
+
+        .id-header-text { font-size: 15px; font-weight: 700; color: white;}
+        .id-header-sub { font-size: 12px; color: #94A3B8; display: block; margin-top: 3px;}
 
         .student-name-gold {
             color: var(--id-gold);
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 800;
             margin-bottom: 20px;
             line-height: 1.4;
@@ -128,8 +150,8 @@
         .pill-label { font-size: 13px; font-weight: 700; color: #475569; }
         .pill-value { font-size: 16px; font-weight: 800; color: var(--primary); letter-spacing: 1px; user-select: all; }
 
-        /* منطقة الشعار واليسار */
-        .logo-box {
+        /* منطقة شعار منصة نور على اليسار */
+        .noor-logo-box {
             background-color: white;
             width: 90px;
             height: 90px;
@@ -139,8 +161,17 @@
             align-items: center;
             margin-bottom: 10px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            font-size: 40px;
+            overflow: hidden;
+            padding: 5px;
+            box-sizing: border-box;
         }
+        
+        .noor-logo-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
         .scan-text { font-size: 11px; font-weight: 700; text-align: center; color: #CBD5E1; line-height: 1.4; }
 
         /* ---------------- الأزرار السفلية ---------------- */
@@ -164,11 +195,10 @@
             .data-pill { border: 1px solid #000; }
         }
 
-        /* تعديلات للموبايل */
         @media (max-width: 480px) {
             .id-card { flex-direction: column; text-align: center; padding: 20px 15px; }
             .id-right { padding-left: 0; width: 100%; margin-bottom: 20px; }
-            .id-header { justify-content: center; }
+            .id-header { justify-content: center; flex-direction: row-reverse; }
             .data-pill { flex-direction: column; gap: 5px; text-align: center; }
         }
     </style>
@@ -178,8 +208,10 @@
     <div class="main-container">
         
         <div id="searchSection">
-            <div class="icon-header">🏫</div>
-            <h2>منصة بنور التعليمية</h2>
+            <img src="school-logo.png" alt="شعار المدرسة" class="school-logo-main" onerror="this.style.display='none';">
+            
+            <h3>مدرسة الإبداع للبنين (5-8)</h3>
+            <h2>بوابة منصة نور</h2>
             <p class="subtitle">أدخل الرقم المدني للطالب لاستخراج بطاقة الدخول الرسمية.</p>
 
             <div class="input-wrapper">
@@ -199,10 +231,10 @@
                     <div class="id-right">
                         <div class="id-header">
                             <div>
-                                <span class="id-header-text">منصة بنور التعليمية</span>
-                                <span class="id-header-sub">بوابة الدخول الرسمية للطلاب</span>
+                                <span class="id-header-text">مدرسة الإبداع للبنين</span>
+                                <span class="id-header-sub">بوابة الدخول - منصة نور</span>
                             </div>
-                            <div class="id-icon">🎓</div>
+                            <img src="school-logo.png" alt="شعار المدرسة" class="id-school-logo" onerror="this.style.display='none';">
                         </div>
                         
                         <div class="student-name-gold" id="resStudentName">---</div>
@@ -218,8 +250,8 @@
                     </div>
 
                     <div class="id-left">
-                        <div class="logo-box">
-                            📚
+                        <div class="noor-logo-box">
+                            <img src="noor-logo.png" alt="شعار نور" class="noor-logo-img">
                         </div>
                         <div class="scan-text">بطاقة<br>طالب معتمدة</div>
                     </div>
@@ -241,8 +273,8 @@
     </div>
 
     <script>
-        // ⚠️ ضع رابط جوجل شيت هنا
-       const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxb7pGmD5oKpJ1i1YQ7086EmdIqIGs_sV3LN29TASwJVLZogaN9F_tkX0A7QK8cI0o/exec";
+        // ⚠️ ضع رابط واجهة جوجل شيت (API) هنا
+        const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxb7pGmD5oKpJ1i1YQ7086EmdIqIGs_sV3LN29TASwJVLZogaN9F_tkX0A7QK8cI0o/exec";
 
         async function fetchStudentData() {
             const civilIdInput = document.getElementById('civilId').value;
@@ -291,13 +323,14 @@
             }
         }
 
-        // دالة حفظ البطاقة كصورة (تلتقط فقط إطار البطاقة id-card-wrapper)
+        // دالة حفظ البطاقة كصورة
         function saveAsImage() {
             const captureArea = document.getElementById('captureArea');
             
             html2canvas(captureArea, {
-                scale: 3, // دقة عالية للصورة
-                backgroundColor: '#ffffff' // خلفية بيضاء للإطار المتقطع
+                scale: 3, 
+                backgroundColor: '#ffffff',
+                useCORS: true // بقاء هذه الخاصية مفيد حتى مع الصور المحلية لضمان عدم وجود أخطاء في الكانفاس
             }).then(canvas => {
                 const link = document.createElement('a');
                 link.download = 'بطاقة_دخول_نور.png';
