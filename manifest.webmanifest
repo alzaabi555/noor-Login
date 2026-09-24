@@ -1,8 +1,8 @@
 {
-  "id": "./noor-portal",
+  "id": "./noor-parent-portal",
   "name": "بوابة منصة نور",
   "short_name": "بوابة نور",
-  "description": "بوابة آمنة للحصول على بيانات الدخول إلى منصة نور",
+  "description": "بوابة آمنة لولي الأمر لاسترداد بيانات دخول الطالب",
   "lang": "ar",
   "dir": "rtl",
   "start_url": "./index.html?source=pwa",
@@ -29,19 +29,6 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
-    }
-  ],
-  "shortcuts": [
-    {
-      "name": "دخول ولي الأمر",
-      "short_name": "دخول",
-      "url": "./login.html?source=shortcut",
-      "icons": [
-        {
-          "src": "./icon-192.png",
-          "sizes": "192x192"
-        }
-      ]
     }
   ]
 }
